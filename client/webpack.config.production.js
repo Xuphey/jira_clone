@@ -40,12 +40,8 @@ module.exports = {
       },
       {
         test: /\.(woff2?|eot|ttf|otf)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: { name: '[name]-[hash].[ext]' },
-          },
-        ],
+        type: 'asset/resource',
+        dependency: { not: ['url'] },
       },
     ],
   },

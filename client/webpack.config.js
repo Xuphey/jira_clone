@@ -24,12 +24,8 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif|woff2?|eot|ttf|otf|svg)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: { limit: 15000 },
-          },
-        ],
+        type: 'asset/resource',
+        dependency: { not: ['url'] },
       },
     ],
   },
