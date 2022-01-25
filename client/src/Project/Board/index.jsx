@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Route, useRouteMatch, useHistory } from 'react-router-dom';
+import { Route, useMatch, useNavigate } from 'react-router-dom';
 
 import useMergeState from 'shared/hooks/mergeState';
 import { Breadcrumbs, Modal } from 'shared/components';
@@ -24,8 +24,8 @@ const defaultFilters = {
 };
 
 const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
-  const match = useRouteMatch();
-  const history = useHistory();
+  const match = useMatch('/project/board');
+  const navigate = useNavigate();
 
   const [filters, mergeFilters] = useMergeState(defaultFilters);
 
@@ -52,7 +52,7 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
             testid="modal:issue-details"
             width={1040}
             withCloseIcon={false}
-            onClose={() => history.push(match.url)}
+            onClose={() => navigate(match.url)}
             renderContent={modal => (
               <IssueDetails
                 issueId={routeProps.match.params.issueId}

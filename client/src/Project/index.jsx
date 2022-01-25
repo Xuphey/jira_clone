@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect, useRouteMatch, useHistory } from 'react-router-dom';
+import { Routes, Route, Navigate, useMatch, useNavigate } from 'react-router-dom';
 
 import useApi from 'shared/hooks/api';
 import { updateArrayItemById } from 'shared/utils/javascript';
@@ -15,8 +15,8 @@ import ProjectSettings from './ProjectSettings';
 import { ProjectPage } from './Styles';
 
 const Project = () => {
-  const match = useRouteMatch();
-  const history = useHistory();
+  const match = useMatch('/project');
+  const navigate = useNavigate();
 
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search');
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');
@@ -68,30 +68,29 @@ const Project = () => {
             <IssueCreate
               project={project}
               fetchProject={fetchProject}
-              onCreate={() => history.push(`${match.url}/board`)}
+              onCreate={() => navigate(`${match.url}/board`)}
               modalClose={modal.close}
             />
           )}
         />
       )}
-
-      <Route
-        path={`${match.path}/board`}
-        render={() => (
-          <Board
-            project={project}
-            fetchProject={fetchProject}
-            updateLocalProjectIssues={updateLocalProjectIssues}
-          />
-        )}
-      />
-
-      <Route
-        path={`${match.path}/settings`}
-        render={() => <ProjectSettings project={project} fetchProject={fetchProject} />}
-      />
-
-      {match.isExact && <Redirect to={`${match.url}/board`} />}
+      <Routes>
+        <Route
+          path={`${match.path}/board`}
+          render={() => (
+            <Board
+              project={project}
+              fetchProject={fetchProject}
+              updateLocalProjectIssues={updateLocalProjectIssues}
+            />
+          )}
+        />
+        <Route
+          path={`${match.path}/settings`}
+          render={() => <ProjectSettings project={project} fetchProject={fetchProject} />}
+        />
+      </Routes>
+      {match.isExact && <Navigate to={`${match.url}/board`} />}
     </ProjectPage>
   );
 };
