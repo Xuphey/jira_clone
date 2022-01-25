@@ -15,7 +15,7 @@ import ProjectSettings from './ProjectSettings';
 import { ProjectPage } from './Styles';
 
 const Project = () => {
-  const match = useMatch('/project');
+  const match = useMatch('/project/*');
   const navigate = useNavigate();
 
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search');
@@ -68,7 +68,7 @@ const Project = () => {
             <IssueCreate
               project={project}
               fetchProject={fetchProject}
-              onCreate={() => navigate(`${match.url}/board`)}
+              onCreate={() => navigate(`${match.pathnameBase}/board`)}
               modalClose={modal.close}
             />
           )}
@@ -76,21 +76,20 @@ const Project = () => {
       )}
       <Routes>
         <Route
-          path={`${match.path}/board`}
-          render={() => (
+          path="board/*"
+          element={
             <Board
               project={project}
               fetchProject={fetchProject}
               updateLocalProjectIssues={updateLocalProjectIssues}
-            />
-          )}
+            />}
         />
         <Route
-          path={`${match.path}/settings`}
+          path="settings"
           render={() => <ProjectSettings project={project} fetchProject={fetchProject} />}
         />
       </Routes>
-      {match.isExact && <Navigate to={`${match.url}/board`} />}
+      {match.isExact && <Navigate to={`${match.pathnameBase}/board`} />}
     </ProjectPage>
   );
 };

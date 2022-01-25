@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Route, useMatch, useNavigate } from 'react-router-dom';
+import { Routes, Route, useMatch, useNavigate } from 'react-router-dom';
 
 import useMergeState from 'shared/hooks/mergeState';
 import { Breadcrumbs, Modal } from 'shared/components';
@@ -44,27 +44,29 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
         filters={filters}
         updateLocalProjectIssues={updateLocalProjectIssues}
       />
-      <Route
-        path={`${match.path}/issues/:issueId`}
-        render={routeProps => (
-          <Modal
-            isOpen
-            testid="modal:issue-details"
-            width={1040}
-            withCloseIcon={false}
-            onClose={() => navigate(match.url)}
-            renderContent={modal => (
-              <IssueDetails
-                issueId={routeProps.match.params.issueId}
-                projectUsers={project.users}
-                fetchProject={fetchProject}
-                updateLocalProjectIssues={updateLocalProjectIssues}
-                modalClose={modal.close}
-              />
-            )}
-          />
-        )}
-      />
+      <Routes>
+        <Route
+          path="issues/:issueId"
+          render={routeProps => (
+            <Modal
+              isOpen
+              testid="modal:issue-details"
+              width={1040}
+              withCloseIcon={false}
+              onClose={() => navigate(match.pathnameBase)}
+              renderContent={modal => (
+                <IssueDetails
+                  issueId={routeProps.match.params.issueId}
+                  projectUsers={project.users}
+                  fetchProject={fetchProject}
+                  updateLocalProjectIssues={updateLocalProjectIssues}
+                  modalClose={modal.close}
+                />
+              )}
+            />
+          )}
+        />
+      </Routes>
     </Fragment>
   );
 };

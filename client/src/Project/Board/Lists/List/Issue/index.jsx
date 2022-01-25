@@ -14,7 +14,7 @@ const propTypes = {
 };
 
 const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
-  const match = useMatch();
+  const match = useMatch('project/board/issues/:issueId');
 
   const assignees = issue.userIds.map(userId => projectUsers.find(user => user.id === userId));
 
@@ -22,7 +22,7 @@ const ProjectBoardListIssue = ({ projectUsers, issue, index }) => {
     <Draggable draggableId={issue.id.toString()} index={index}>
       {(provided, snapshot) => (
         <IssueLink
-          to={`${match.url}/issues/${issue.id}`}
+          to={`/issues/${issue.id}`}
           ref={provided.innerRef}
           data-testid="list-issue"
           {...provided.draggableProps}
